@@ -3,6 +3,7 @@ package com.pokemonteambuilder.models;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -10,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
@@ -19,6 +21,8 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
 import org.springframework.format.annotation.DateTimeFormat;
+
+import com.pokemonteambuilder.models.Picture;
 
 @Entity
 @Table(name="users")
@@ -44,6 +48,9 @@ public class User {
 	@NotEmpty(message="Password Confirmation is required")
 	@Size(min = 8, max = 256, message="Password confirmation must be at 8 to 256 characters in length" )
 	private String confirmation;
+	
+    @OneToOne(mappedBy="picturedUser", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
+    private Picture profilePic;
 	
 	@Column(updatable = false)
 	@DateTimeFormat(pattern="yyyy-MM-dd")
@@ -129,6 +136,14 @@ public class User {
 
 	public void setBoxes(List<Box> boxes) {
 		this.boxes = boxes;
+	}
+
+	public Picture getProfilePic() {
+		return profilePic;
+	}
+
+	public void setProfilePic(Picture profilePic) {
+		this.profilePic = profilePic;
 	}
     
     
