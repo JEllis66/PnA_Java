@@ -35,15 +35,8 @@
                 </div>
             </div>
         </nav>
-        <h1><c:out value="${box.title}"/></h1>
-        <table class="table table-bordered table-hover">
-        	<c:forEach var="team" items="${box.teams}">
-		    	<tr>
-		        	<td><a href="/team/${team.id}"><c:out value="${team.title}"/></a></td>
-		        	<td><c:out value="pokemon-pic"></c:out></td>
-		    	</tr>
-		    </c:forEach>
-		</table>
+        <h1><c:out value="${team.title}"/></h1>
+        
     </body>
 
     </html>
