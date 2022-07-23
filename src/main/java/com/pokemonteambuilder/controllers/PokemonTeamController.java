@@ -81,10 +81,7 @@ public class PokemonTeamController {
 	
 	@PostMapping("/box/submit")
 	public String addNewBox(@Valid @ModelAttribute("box") Box box, BindingResult result){
-			
-		if (result.hasErrors()) {
-			return "myTeams.jsp";
-		}
+		
 		boxService.createBox(box);
 		return "redirect:/tvguide";
 	}
@@ -157,6 +154,7 @@ public class PokemonTeamController {
 			
 			return "redirect:/box";
 		}
+		
 	
 	
 }
