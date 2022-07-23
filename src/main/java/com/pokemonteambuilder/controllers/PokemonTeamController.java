@@ -1,5 +1,7 @@
 package com.pokemonteambuilder.controllers;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
@@ -12,13 +14,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import com.pokemonteambuilder.models.LoginUser;
-import com.pokemonteambuilder.models.Pokemon;
-import com.pokemonteambuilder.models.User;
 import com.pokemonteambuilder.models.Box;
-import com.pokemonteambuilder.models.Team;
 import com.pokemonteambuilder.models.Discussion;
-
+import com.pokemonteambuilder.models.LoginUser;
+import com.pokemonteambuilder.models.Team;
+import com.pokemonteambuilder.models.User;
+import com.pokemonteambuilder.services.BoxService;
+import com.pokemonteambuilder.services.DiscussionService;
 import com.pokemonteambuilder.services.TeamService;
 import com.pokemonteambuilder.services.UserService;
 
@@ -29,7 +31,10 @@ public class PokemonTeamController {
 	TeamService teamService;
 	@Autowired
 	UserService userService;
-	
+	@Autowired
+	DiscussionService discussionService;
+	@Autowired
+	BoxService boxService;
 	
 	//index
 	
@@ -104,9 +109,11 @@ public class PokemonTeamController {
 			if(session.getAttribute("userId" ) == null) {
 				return "redirect:/";
 			}
-			model.addAttribute("box", boxService.allBoxes());
-			model.addAttribute("user", userService.findById((Long)session.getAttribute("userId")));
-			return "box.jsp";
+			User user = userService.findById((Long)session.getAttribute("userId"));
+			List<Box> boxes = user.getBoxes();
+			model.addAttribute("boxes", boxes);
+			model.addAttribute("user", user);
+			return "Dashboard.jsp";
 		}
 		
 	

@@ -19,6 +19,7 @@ public class BoxService {
 	//Create
 	
 		public Box createBox(Box b) {
+			b.setTitle("Box" + b.getId());
 			return boxRepository.save(b);
 		}
 	

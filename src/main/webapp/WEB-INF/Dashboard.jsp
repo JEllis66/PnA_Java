@@ -41,11 +41,11 @@
 		</div>
 	</nav>
 	<div class="container">
-		<h1>Hello ${ user.userName }</h1>
+		<h1>Hello ${ user.name }</h1>
 		<div>
 			<div class="d-flex justify-content-around">
 				<div class="card" id="dashboard-card">
-					<div class="card-header text-center">Hi, ${user.userName }</div>
+					<div class="card-header text-center">Hi, ${user.name }</div>
 					<div
 						class="card-body align-items-center d-flex justify-content-center">
 						<h5 class="card-title">Build your dream team!</h5>
@@ -61,6 +61,41 @@
 							<input type="submit" value="Upload"
 								class="btn btn-primary float-end" />
 						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div>
+			<!-- Tabs or Pills can be used in a card with the help of .nav-{tabs|pills} and .card-header-{tabs|pills} classes -->
+			<div class="card">
+				<div class="card-header">
+					<ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
+						<c:forEach var="box" items="${ boxes }">
+							<li class="nav-item" role="presentation"><a class="nav-link"
+								id="profile-tab" data-bs-toggle="tab" href="#profile" role="tab"
+								aria-controls="profile" aria-selected="false">${ box.title }</a></li>
+						</c:forEach>
+						<li>
+							<li class="nav-item" role="presentation"><a class="nav-link"
+								id="profile-tab" data-bs-toggle="tab" href="/box/submit" role="tab"
+								aria-controls="profile" aria-selected="false">+</a></li>
+						</li>
+					</ul>
+				</div>
+				<div class="card-body">
+					<div class="tab-content" id="myTabContent">
+						<div class="tab-pane fade show active" id="home" role="tabpanel"
+							aria-labelledby="home-tab">Lorem ipsum dolor sit amet
+							consectetur adipisicing elit. Eligendi alias praesentium illo
+							omnis adipisci ipsa suscipit rerum quidem doloribus magnam?</div>
+						<div class="tab-pane fade" id="profile" role="tabpanel"
+							aria-labelledby="profile-tab">Lorem ipsum dolor sit amet
+							consectetur adipisicing elit. Iure, asperiores provident ea eaque
+							quis omnis adipisci in exercitationem necessitatibus dolorem.</div>
+						<div class="tab-pane fade" id="disabled" role="tabpanel"
+							aria-labelledby="disabled-tab">Lorem, ipsum dolor sit amet
+							consectetur adipisicing elit. Suscipit rem accusamus officia quia
+							eos ducimus consequuntur! Impedit aliquid vero suscipit.</div>
 					</div>
 				</div>
 			</div>
