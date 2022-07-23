@@ -113,7 +113,16 @@ public class PokemonTeamController {
 			return "box.jsp";
 		}
 		
-	
+		@GetMapping("/box/{id}")
+		public String viewBox(Model model, HttpSession session, @PathVariable("id") Long boxId) {
+			if(session.getAttribute("userId" ) == null) {
+				return "redirect:/";
+			}
+			model.addAttribute("box", boxService.findById(boxId));
+			
+			return "ViewBox.jsp";
+			
+		}
 	
 	
 	//Update

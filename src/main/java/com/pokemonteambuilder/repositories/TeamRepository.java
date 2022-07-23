@@ -10,5 +10,7 @@ import com.pokemonteambuilder.models.Team;
 public interface TeamRepository extends CrudRepository<Team, Long> {
 	
 	List<Team> findAll();
+	
+	List<Team> findByBoxId(Long boxId);
 
 }
