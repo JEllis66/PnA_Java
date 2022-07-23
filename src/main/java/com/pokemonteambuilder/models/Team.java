@@ -41,7 +41,9 @@ public class Team {
 	
 	private String pokemon6;
 	
-	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="box_id")
+    private Box box;
 	
 //	@ManyToOne(fetch = FetchType.LAZY)
 //	@JoinColumn(name="user_id")
