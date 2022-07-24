@@ -12,13 +12,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import com.pokemonteambuilder.models.LoginUser;
-import com.pokemonteambuilder.models.Pokemon;
-import com.pokemonteambuilder.models.User;
 import com.pokemonteambuilder.models.Box;
-import com.pokemonteambuilder.models.Team;
 import com.pokemonteambuilder.models.Discussion;
-
+import com.pokemonteambuilder.models.LoginUser;
+import com.pokemonteambuilder.models.Team;
+import com.pokemonteambuilder.models.User;
+import com.pokemonteambuilder.services.BoxService;
+import com.pokemonteambuilder.services.DiscussionService;
 import com.pokemonteambuilder.services.TeamService;
 import com.pokemonteambuilder.services.UserService;
 
@@ -29,6 +29,10 @@ public class PokemonTeamController {
 	TeamService teamService;
 	@Autowired
 	UserService userService;
+	@Autowired
+	BoxService boxService;
+	@Autowired
+	DiscussionService discussionService;
 	
 	
 	//index
@@ -109,9 +113,28 @@ public class PokemonTeamController {
 			return "box.jsp";
 		}
 		
+		@GetMapping("/box/{id}")
+		public String viewBox(Model model, HttpSession session, @PathVariable("id") Long boxId) {
+
+			if(session.getAttribute("userId" ) == null) {
+				return "redirect:/";
+			}
+			model.addAttribute("box", boxService.findById(boxId));
+			
+			return "ViewBox.jsp";
+			
+		}
 	
-	
-	
+		@GetMapping("/team/{id}")
+		public String viewTeam(Model model, HttpSession session, @PathVariable("id") Long teamId) {
+			if(session.getAttribute("userId" ) == null) {
+				return "redirect:/";
+			}
+			model.addAttribute("team", teamService.findById(teamId));
+			
+			return "ViewTeam.jsp";
+		}
+		
 	//Update
 	
 		@GetMapping("/box/{id}/edit")

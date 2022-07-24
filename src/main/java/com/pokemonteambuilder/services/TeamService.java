@@ -50,4 +50,13 @@ public class TeamService {
 			teamRepository.delete(findById(id));
 		}
 	
+	//checks the number of teams in a box
+		public boolean limitCheck(Long boxId) {
+			List <Team> teams= teamRepository.findByBoxId(boxId);
+			if (teams.size() > 5) {
+				return false;
+			}
+			return true;
+		}
+	
 }
