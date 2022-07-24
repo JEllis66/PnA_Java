@@ -62,11 +62,9 @@ public class PokemonTeamController {
 	
 	@PostMapping("/discussion/submit")
 	public String submitDiscussion(Model model, @RequestParam(defaultValue = "0") int page, @Valid @ModelAttribute("newDiscussion") Discussion discussion, BindingResult result, HttpSession session) {
-		/*
 		if(discussion.getUser().getId() != (long)session.getAttribute("userId")) {
 			return "redirect:/";
 		}
-		*/
 		
 		if (result.hasErrors()) {
 			Page<Discussion> pageDiscussions = discussionService.getDiscussionPage(page, 2);
