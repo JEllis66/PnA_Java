@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.pokemonteambuilder.models.Box;
+import com.pokemonteambuilder.models.User;
 import com.pokemonteambuilder.repositories.BoxRepository;
 
 @Service
@@ -18,8 +19,9 @@ public class BoxService {
 	
 	//Create
 	
-		public Box createBox(Box b) {
-			b.setTitle("Box" + b.getId());
+		public Box createBox(Box b, User u) {
+			b.setTitle("Box " + u.getBoxes().size());
+			b.setUser(u);
 			return boxRepository.save(b);
 		}
 	

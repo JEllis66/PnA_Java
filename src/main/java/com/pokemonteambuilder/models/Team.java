@@ -1,6 +1,7 @@
 package com.pokemonteambuilder.models;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
@@ -42,6 +44,13 @@ public class Team {
 	private String pokemon6;
 	
 	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="box_id")
+	private Box teamBox;
+	
+	@Column(updatable=false)
+	@OneToMany(mappedBy="pokemonTeam")
+	List<Pokemon> pokemon;
 	
 //	@ManyToOne(fetch = FetchType.LAZY)
 //	@JoinColumn(name="user_id")
@@ -138,6 +147,14 @@ public class Team {
 //	public void setUser(User user) {
 //		this.user = user;
 //	}
+
+	public Box getTeamBox() {
+		return teamBox;
+	}
+
+	public void setTeamBox(Box teamBox) {
+		this.teamBox = teamBox;
+	}
 
 	public Date getCreatedAt() {
 		return createdAt;

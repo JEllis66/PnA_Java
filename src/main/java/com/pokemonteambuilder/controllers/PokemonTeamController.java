@@ -35,126 +35,124 @@ public class PokemonTeamController {
 	DiscussionService discussionService;
 	@Autowired
 	BoxService boxService;
-	
-	//index
-	
+
+	// index
+
 	@GetMapping("/")
 	public String index(Model model) {
 		model.addAttribute("newUser", new User());
 		model.addAttribute("newLogin", new LoginUser());
 		return "index.jsp";
 	}
-	
-	//Create
-	
+
+	// Create
+
 	@PostMapping("/createUser")
-	public String registerUser(Model model, @Valid @ModelAttribute("newUser") User newUser, BindingResult result, HttpSession session) {
+	public String registerUser(Model model, @Valid @ModelAttribute("newUser") User newUser, BindingResult result,
+			HttpSession session) {
 		User user = userService.register(newUser, result);
-		if(result.hasErrors()) {
+		if (result.hasErrors()) {
 			model.addAttribute("newLogin", new LoginUser());
 			return "index.jsp";
 		}
 		session.setAttribute("userName", user.getName());
 		session.setAttribute("userId", user.getId());
-		return "redirect:/dashboard"; //homepage for user "Hello User"
+		return "redirect:/dashboard"; // homepage for user "Hello User"
 	}
-	
+
 	@PostMapping("/discussion/submit")
-	public String addNewDiscussion(@Valid @ModelAttribute("discussion") Discussion discussion, BindingResult result){
-			
+	public String addNewDiscussion(@Valid @ModelAttribute("discussion") Discussion discussion, BindingResult result) {
+
 		if (result.hasErrors()) {
 			return "newDiscussion.jsp";
 		}
 		discussionService.createDiscussion(discussion);
 		return "redirect:/discussion";
 	}
-	
+
 	@PostMapping("/team/submit")
-	public String addNewTeam(@Valid @ModelAttribute("tvshow") Team team, BindingResult result){
-			
+	public String addNewTeam(@Valid @ModelAttribute("tvshow") Team team, BindingResult result) {
+
 		if (result.hasErrors()) {
 			return "newTeam.jsp";
 		}
 		teamService.createTeam(team);
 		return "redirect:/teams";
 	}
-	
-	@PostMapping("/box/submit")
-	public String addNewBox(@Valid @ModelAttribute("box") Box box, BindingResult result){
-		
-		boxService.createBox(box);
-		return "redirect:/tvguide";
+
+	@GetMapping("/box/submit")
+	public String addNewBox(@ModelAttribute("box") Box box, BindingResult result, HttpSession session) {
+		User user = userService.findById((Long) session.getAttribute("userId"));
+		List<Box> boxes = user.getBoxes();
+		if (boxes.size() < 6) {
+			boxService.createBox(box, user);
+		}
+		return "redirect:/dashboard";
 	}
-	
-	
-	//Read
-	
-		@PostMapping("/login")
-		public String login(Model model, @Valid @ModelAttribute("newLogin") LoginUser newLogin, BindingResult result, HttpSession session){
-			User user = userService.login(newLogin, result);
-			if(result.hasErrors()) {
-				model.addAttribute("newUser", new User());
-				return "index.jsp";
-			}
-			session.setAttribute("userName", user.getName());
-			session.setAttribute("userId", user.getId());
+
+	// Read
+
+	@PostMapping("/login")
+	public String login(Model model, @Valid @ModelAttribute("newLogin") LoginUser newLogin, BindingResult result,
+			HttpSession session) {
+		User user = userService.login(newLogin, result);
+		if (result.hasErrors()) {
+			model.addAttribute("newUser", new User());
+			return "index.jsp";
+		}
+		session.setAttribute("userName", user.getName());
+		session.setAttribute("userId", user.getId());
+		return "redirect:/";
+	}
+
+	@GetMapping("/dashboard")
+	public String tvguide(Model model, HttpSession session) {
+		if (session.getAttribute("userId") == null) {
 			return "redirect:/";
 		}
-	
-		@GetMapping("/dashboard")
-		public String tvguide(Model model, HttpSession session) {
-			if(session.getAttribute("userId" ) == null) {
-				return "redirect:/";
-			}
-			User user = userService.findById((Long)session.getAttribute("userId"));
-			List<Box> boxes = user.getBoxes();
-			model.addAttribute("boxes", boxes);
-			model.addAttribute("user", user);
-			return "Dashboard.jsp";
+		User user = userService.findById((Long) session.getAttribute("userId"));
+		List<Box> boxes = user.getBoxes();
+		model.addAttribute("boxes", boxes);
+		model.addAttribute("user", user);
+		return "Dashboard.jsp";
+	}
+
+	// Update
+
+	@GetMapping("/box/{id}/edit")
+	public String edit(Model model, @PathVariable("id") Long id, HttpSession session) {
+		if (session.getAttribute("userId") == null) {
+			return "redirect:/";
 		}
-		
-	
-	
-	
-	//Update
-	
-		@GetMapping("/box/{id}/edit")
-		public String edit(Model model, @PathVariable("id") Long id, HttpSession session) {
-			if(session.getAttribute("userId") == null) {
-				return "redirect:/";
-			}
-			Box box = boxService.findById(id);
-			model.addAttribute("box", box);
-			
+		Box box = boxService.findById(id);
+		model.addAttribute("box", box);
+
+		return "box.jsp";
+	}
+
+	@PostMapping("/box/edit/submit/{id}")
+	public String submitUpdate(Model model, @Valid @ModelAttribute("tvshow") Box box, BindingResult result) {
+		if (result.hasErrors()) {
 			return "box.jsp";
 		}
-		
-		@PostMapping("/box/edit/submit/{id}")
-		public String submitUpdate(Model model, @Valid @ModelAttribute("tvshow") Box box, BindingResult result) {
-			if(result.hasErrors()) {
-				return "box.jsp";
-			}
-			boxService.updateBox(box);
-			
-			return "redirect:/dashboard";
-		}
-	
-	
-	//Delete
-	
-		@GetMapping("/logout")
-		public String logout(HttpSession session) {
-			session.invalidate();
-			return "redirect:/";
-		}
-		
-		@GetMapping("/box/{id}/delete")
-		public String delete(@PathVariable("id") Long id) {
-			boxService.deleteBox(id);
-			
-			return "redirect:/box";
-		}
-		
-	
-	
+		boxService.updateBox(box);
+
+		return "redirect:/dashboard";
+	}
+
+	// Delete
+
+	@GetMapping("/logout")
+	public String logout(HttpSession session) {
+		session.invalidate();
+		return "redirect:/";
+	}
+
+	@GetMapping("/box/{id}/delete")
+	public String delete(@PathVariable("id") Long id) {
+		boxService.deleteBox(id);
+
+		return "redirect:/box";
+	}
+
 }

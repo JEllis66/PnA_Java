@@ -77,7 +77,7 @@
 						</c:forEach>
 						<li>
 							<li class="nav-item" role="presentation"><a class="nav-link"
-								id="profile-tab" data-bs-toggle="tab" href="/box/submit" role="tab"
+								id="profile-tab"  href="/box/submit" role="tab"
 								aria-controls="profile" aria-selected="false">+</a></li>
 						</li>
 					</ul>
