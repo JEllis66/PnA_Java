@@ -16,12 +16,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.pokemonteambuilder.models.Box;
 import com.pokemonteambuilder.models.Discussion;
-<<<<<<< HEAD
 import com.pokemonteambuilder.models.LoginUser;
 import com.pokemonteambuilder.models.Team;
 import com.pokemonteambuilder.models.User;
-=======
->>>>>>> 1b6e470 (added discussion)
 import com.pokemonteambuilder.services.BoxService;
 import com.pokemonteambuilder.services.DiscussionService;
 import com.pokemonteambuilder.services.TeamService;
