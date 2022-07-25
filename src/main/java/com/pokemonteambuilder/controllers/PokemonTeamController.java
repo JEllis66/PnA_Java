@@ -4,6 +4,7 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.pokemonteambuilder.models.Box;
 import com.pokemonteambuilder.models.Discussion;
@@ -59,10 +61,19 @@ public class PokemonTeamController {
 	}
 	
 	@PostMapping("/discussion/submit")
-	public String addNewDiscussion(@Valid @ModelAttribute("discussion") Discussion discussion, BindingResult result){
-			
+	public String submitDiscussion(Model model, @RequestParam(defaultValue = "0") int page, @Valid @ModelAttribute("newDiscussion") Discussion discussion, BindingResult result, HttpSession session) {
+		if(discussion.getUser().getId() != (long)session.getAttribute("userId")) {
+			return "redirect:/";
+		}
+		
 		if (result.hasErrors()) {
-			return "newDiscussion.jsp";
+			Page<Discussion> pageDiscussions = discussionService.getDiscussionPage(page, 2);
+			
+			model.addAttribute("discussions", pageDiscussions.getContent());
+			model.addAttribute("currentPage", pageDiscussions.getNumber());
+			model.addAttribute("totalPages", pageDiscussions.getTotalPages());
+			
+			return "discussion.jsp";
 		}
 		discussionService.createDiscussion(discussion);
 		return "redirect:/discussion";
@@ -135,6 +146,17 @@ public class PokemonTeamController {
 			return "ViewTeam.jsp";
 		}
 		
+		@GetMapping("/discussion")
+		public String discussion(Model model, @RequestParam(defaultValue = "0") int page, @ModelAttribute("newDiscussion") Discussion newDiscussion, HttpSession session) {				
+			Page<Discussion> pageDiscussions = discussionService.getDiscussionPage(page, 10);
+			
+			model.addAttribute("discussions", pageDiscussions.getContent());
+			model.addAttribute("currentPage", pageDiscussions.getNumber());
+			model.addAttribute("totalPages", pageDiscussions.getTotalPages());
+			
+			return "discussion.jsp";
+		}
+	
 	//Update
 	
 		@GetMapping("/box/{id}/edit")
@@ -157,7 +179,6 @@ public class PokemonTeamController {
 			
 			return "redirect:/dashboard";
 		}
-	
 	
 	//Delete
 	
