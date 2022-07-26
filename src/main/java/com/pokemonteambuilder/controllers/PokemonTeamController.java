@@ -43,6 +43,10 @@ public class PokemonTeamController {
 	public String index(Model model) {
 		model.addAttribute("newUser", new User());
 		model.addAttribute("newLogin", new LoginUser());
+		
+		Page<Discussion> pageDiscussions = discussionService.getDiscussionPage(0, 10);
+		model.addAttribute("discussions", pageDiscussions.getContent());
+		
 		return "index.jsp";
 	}
 	
@@ -53,6 +57,9 @@ public class PokemonTeamController {
 		User user = userService.register(newUser, result);
 		if(result.hasErrors()) {
 			model.addAttribute("newLogin", new LoginUser());
+			
+			Page<Discussion> pageDiscussions = discussionService.getDiscussionPage(0, 10);
+			model.addAttribute("discussions", pageDiscussions.getContent());
 			return "index.jsp";
 		}
 		session.setAttribute("userName", user.getName());
@@ -67,7 +74,7 @@ public class PokemonTeamController {
 		}
 		
 		if (result.hasErrors()) {
-			Page<Discussion> pageDiscussions = discussionService.getDiscussionPage(page, 2);
+			Page<Discussion> pageDiscussions = discussionService.getDiscussionPage(page, 10);
 			
 			model.addAttribute("discussions", pageDiscussions.getContent());
 			model.addAttribute("currentPage", pageDiscussions.getNumber());
@@ -107,6 +114,10 @@ public class PokemonTeamController {
 			User user = userService.login(newLogin, result);
 			if(result.hasErrors()) {
 				model.addAttribute("newUser", new User());
+				
+				Page<Discussion> pageDiscussions = discussionService.getDiscussionPage(0, 10);
+				model.addAttribute("discussions", pageDiscussions.getContent());
+				
 				return "index.jsp";
 			}
 			session.setAttribute("userName", user.getName());

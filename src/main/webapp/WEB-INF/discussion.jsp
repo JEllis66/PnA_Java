@@ -25,36 +25,45 @@
 			<h1 class="text-primary text-align-center">Forum</h1>
 		</div>
 		<div class="row mt-4">
-			<div class="row mt-3 d-flex justify-content-evenly">
-				<div class="col-13">
-					<table class="table table-borderless">
-						<tbody>
-							<c:forEach var="discussion" items="${discussions}">
-								<tr>
-									<td class="align-middle">${discussion.createdAt}</td>
-									<td class="align-middle font-weight-bold">${discussion.user.name}: </td>
-									<td class="align-middle">${discussion.message}</td>
-								</tr>
-							</c:forEach>
-						</tbody>
-					</table>
-				</div>
-				<div>
-				  <c:if test="${currentPage > 0}"><span><a href="/discussion?page=${currentPage-1}">Previous Page</a></span></c:if>
-				  <c:if test="${currentPage < totalPages - 1}"><span><a href="/discussion?page=${currentPage+1}">Next Page</a></span></c:if>
-				</div>
+			<div>
+				<c:choose>
+					<c:when test="${discussions.size() == 0}">
+						<div>No discussion posted yet!</div>
+					</c:when>
+					<c:otherwise>
+						<c:forEach var="discussion" items="${discussions}">
+		                    <div class="d-flex">
+								<div class="d-inline-block font-weight-bold">${discussion.user.name}:</div>
+								<div class="d-inline-block ml-2">${discussion.message}<span class="text-muted small ml-2">[Posted at: ${discussion.createdAt}]</span></div>
+							</div>
+						</c:forEach>
+					</c:otherwise>
+				</c:choose>
+				<c:if test="${totalPages > 1}">
+					<div class="d-flex mt-4">
+					  <c:if test="${currentPage > 0}">
+					  	<div class="d-inline-block mr-3"><a href="/discussion?page=${currentPage-1}" class="text-decoration-none">&lt; Previous</a></div>
+					  </c:if>
+					  <c:if test="${currentPage < totalPages - 1}">
+					  	<div class="d-inline-block"><a href="/discussion?page=${currentPage+1}" class="text-decoration-none">Next &gt;</a></div>
+					  </c:if>
+					</div>
+				</c:if>
 			</div>
 			<c:if test="${userId != null}">
-				<div>
+				<div class="mt-4">
 					<form:form action="/discussion/submit?page=${currentPage}" method="post" modelAttribute="newDiscussion">
-						<div class="form-group pt-3">
-							<form:label path="message">Add post:</form:label>
-							<form:errors path="message" class="text-danger" />
+						<div class="form-group row">
+							<div class="col-sm-2">
+								<div><form:label path="message" class="col-form-label">Add post:</form:label></div>
+								<div><form:errors path="message" class="text-danger" /></div>
+							</div>
+							<div class="col-sm-10">
 							<form:textarea path="message" class="form-control" row="5" />
+							</div>
 						</div>
-							<!-- hidden -->
+						<div class="text-right">
 							<form:input type="hidden" value="${userId}" path="user"/>
-						<div>
 							<input type="submit" class="btn btn-info mt-3" value="Submit" />
 						</div>
 					</form:form>
