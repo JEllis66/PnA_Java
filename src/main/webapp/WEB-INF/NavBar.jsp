@@ -17,7 +17,7 @@
     <body>
         <nav class="navbar navbar-expand-xl navbar-dark bg-dark">
             <div class="container-fluid">
-                <a class="navbar-brand" href="/home">Team Builder</a>
+                <a class="navbar-brand" href="/dashboard">Team Builder</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarDark"
                     aria-controls="navbarDark" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -28,10 +28,13 @@
                             <a class="nav-link active" aria-current="page" href="/my/boxes">Boxes</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/poke/discussion">Forum</a>
+                            <a class="nav-link" href="/discussion">Forum</a>
                         </li>
                     </ul>
-                    <a class="d-flex nav-link" href="/logout">Logout</a>
+                    <c:choose>
+                    <c:when test="${userId != null}"><a class="d-flex nav-link" href="/logout">Logout</a></c:when>
+                    <c:otherwise><a class="d-flex nav-link" href="/">Login</a></c:otherwise>
+                    </c:choose>
                 </div>
             </div>
         </nav>

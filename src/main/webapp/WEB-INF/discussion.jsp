@@ -19,7 +19,7 @@
 <title>Pokémon Team builder - Forum</title>
 </head>
 <body>
-
+	<jsp:include page="NavBar.jsp" />
 	<div class="container"> 
 		<div class="row mt-4">
 			<h1 class="text-primary text-align-center">Forum</h1>
@@ -54,11 +54,11 @@
 				<div class="mt-4">
 					<form:form action="/discussion/submit?page=${currentPage}" method="post" modelAttribute="newDiscussion">
 						<div class="form-group row">
-							<div class="col-sm-2">
+							<div class="col-sm-1">
 								<div><form:label path="message" class="col-form-label">Add post:</form:label></div>
 								<div><form:errors path="message" class="text-danger" /></div>
 							</div>
-							<div class="col-sm-10">
+							<div class="col-sm-11">
 							<form:textarea path="message" class="form-control" row="5" />
 							</div>
 						</div>
