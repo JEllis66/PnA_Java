@@ -1,0 +1,13 @@
+.container {
+	font-family: "Lucidia Console", monospace;
+}
+.content-box {
+	width: 500px;
+}
+h1 {
+	margin: 20px;
+	font-family: "Lucidia Console", monospace;
+}
+.card-title {
+	margin: 15px;
+}

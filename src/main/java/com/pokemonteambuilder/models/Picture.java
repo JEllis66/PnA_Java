@@ -44,6 +44,9 @@ public class Picture {
     protected void onUpdate() {
     	this.updatedAt = new Date();
     }
+    public Picture() {
+    	
+    }
     
     public Picture(String url, User picturedUser) {
     	this.picturedUser = picturedUser;

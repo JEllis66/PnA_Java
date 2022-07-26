@@ -41,15 +41,16 @@
 		</div>
 	</nav>
 	<h1 class="text-center">Hello ${ user.name }</h1>
-	<div class="container d-flex justify-content-center">
+	<div class="container d-flex justify-content-around">
 
 		<div>
-			<div class="d-flex justify-content-around">
+			<div class="content-box d-flex justify-content-around">
 				<div class="card" id="dashboard-card">
 					<div class="card-header text-center">Hi, ${user.name }</div>
+					<h5 class="card-title text-center">Build your dream team!</h5>
 					<div
 						class="card-body align-items-center d-flex justify-content-center">
-						<h5 class="card-title">Build your dream team!</h5>
+						
 						<img src="${ user.profilePic.url }" height="400" width="300"
 							alt="Profile Picture" />
 					</div>
@@ -68,7 +69,7 @@
 		</div>
 		<div>
 
-			<div class="card">
+			<div class="content-box card">
 				<div class="card-header">
 					<ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
 						<c:forEach var="box" items="${ boxes }">
