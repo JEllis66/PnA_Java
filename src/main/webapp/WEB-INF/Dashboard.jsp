@@ -14,7 +14,7 @@
 <meta charset="ISO-8859-1">
 <title>Home Page</title>
 <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css">
-<link rel="stylesheet" href="/css/main.css">
+<link rel="stylesheet" href="/css/dashboard.css">
 <!-- change to match your file/naming structure -->
 <script src="/webjars/jquery/jquery.min.js"></script>
 <script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
@@ -40,8 +40,9 @@
 			</div>
 		</div>
 	</nav>
-	<div class="container">
-		<h1>Hello ${ user.name }</h1>
+	<h1 class="text-center">Hello ${ user.name }</h1>
+	<div class="container d-flex justify-content-center">
+
 		<div>
 			<div class="d-flex justify-content-around">
 				<div class="card" id="dashboard-card">
@@ -66,7 +67,7 @@
 			</div>
 		</div>
 		<div>
-			<!-- Tabs or Pills can be used in a card with the help of .nav-{tabs|pills} and .card-header-{tabs|pills} classes -->
+
 			<div class="card">
 				<div class="card-header">
 					<ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
@@ -76,26 +77,27 @@
 								aria-controls="profile" aria-selected="false">${ box.title }</a></li>
 						</c:forEach>
 						<li>
-							<li class="nav-item" role="presentation"><a class="nav-link"
-								id="profile-tab"  href="/box/submit" role="tab"
-								aria-controls="profile" aria-selected="false">+</a></li>
+						<li class="nav-item" role="presentation"><a class="nav-link"
+							id="profile-tab" href="/box/submit" role="tab"
+							aria-controls="profile" aria-selected="false">+</a></li>
 						</li>
 					</ul>
 				</div>
 				<div class="card-body">
 					<div class="tab-content" id="myTabContent">
-						<div class="tab-pane fade show active" id="home" role="tabpanel"
-							aria-labelledby="home-tab">Lorem ipsum dolor sit amet
-							consectetur adipisicing elit. Eligendi alias praesentium illo
-							omnis adipisci ipsa suscipit rerum quidem doloribus magnam?</div>
-						<div class="tab-pane fade" id="profile" role="tabpanel"
-							aria-labelledby="profile-tab">Lorem ipsum dolor sit amet
-							consectetur adipisicing elit. Iure, asperiores provident ea eaque
-							quis omnis adipisci in exercitationem necessitatibus dolorem.</div>
-						<div class="tab-pane fade" id="disabled" role="tabpanel"
-							aria-labelledby="disabled-tab">Lorem, ipsum dolor sit amet
-							consectetur adipisicing elit. Suscipit rem accusamus officia quia
-							eos ducimus consequuntur! Impedit aliquid vero suscipit.</div>
+						<c:forEach var="box" items="${ boxes }">
+							<div class="tab-pane fade show active" id="profile"
+								role="tabpanel" aria-labelledby="profile-tab">
+								<c:forEach var="team" items="${ box.teams }">
+									<ul>
+										<c:forEach var="pokemon" items="${ team.pokemon }">
+											<li>${ pokemon.name }</li>
+										</c:forEach>
+									</ul>
+								</c:forEach>
+							</div>
+						</c:forEach>
+
 					</div>
 				</div>
 			</div>
