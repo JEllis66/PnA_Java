@@ -40,7 +40,12 @@
         	<c:forEach var="team" items="${box.teams}">
 		    	<tr>
 		        	<td><a href="/team/${team.id}"><c:out value="${team.title}"/></a></td>
-		        	<td><c:out value="pokemon-pic"></c:out></td>
+		        	<td>*add pokemon-pic</td>
+		        	<td>*add pokemon-pic</td>
+		        	<td>*add pokemon-pic</td>
+		        	<td>*add pokemon-pic</td>
+		        	<td>*add pokemon-pic</td>
+		        	<td>*add pokemon-pic</td>
 		    	</tr>
 		    </c:forEach>
 		</table>

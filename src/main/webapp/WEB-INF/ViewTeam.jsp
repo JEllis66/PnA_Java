@@ -35,7 +35,24 @@
                 </div>
             </div>
         </nav>
-        <h1><c:out value="${team.title}"/></h1>
+        <h2>Pokemon already in <c:out value="${team.title}"/></h2>
+        <div>
+        	<c:forEach var="pokemon" items="${team.pokemons}">
+		    	<div>
+		        	<a href="/pokemon/${pokemon.id}">*add pokemon pic</a>
+		        	<a>*add function to remove pokemon from team</a>
+		    	</div>
+		    </c:forEach>
+		</div>
+		<h2>Available Pokemon</h2>
+		<div>
+        	<c:forEach var="pokemon" items="${team.pokemons}">
+		    	<div>
+		        	<a href="/pokemon/${pokemon.id}">add pokemon pic</a>
+		        	<a>*add function to add pokemon to team</a>
+		    	</div>
+		    </c:forEach>
+		</div>
         
     </body>
 
