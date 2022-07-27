@@ -34,7 +34,7 @@ public class PicController {
 	public String newProfPic(@RequestParam("url") MultipartFile file, HttpSession session, RedirectAttributes redirectedAttrs) {
 		if(file.isEmpty()) {
 			redirectedAttrs.addFlashAttribute("message", "Upload field cannot be empty");
-			return "redirect:/my/fish";
+			return "redirect:/dashboard";
 		}
 		
 		try {
