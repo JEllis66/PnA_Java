@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.pokemonteambuilder.models.Box;
+import com.pokemonteambuilder.models.Team;
 import com.pokemonteambuilder.repositories.BoxRepository;
 
 @Service
@@ -49,5 +50,14 @@ public class BoxService {
 		public void deleteBox(Long id) {
 			boxRepository.delete(findById(id));
 		}
-	
+		
+	//checks the number of teams in a box
+		
+		public boolean boxLimitChecker(Long boxId) {
+			List <Team> teams= findById(boxId).getTeams();
+			if (teams.size() > 5) {
+				return false;
+			}
+			return true;
+		}
 }
