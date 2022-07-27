@@ -1,6 +1,7 @@
 package com.pokemonteambuilder.models;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
@@ -29,19 +31,12 @@ public class Team {
 	@Size(min = 1, max = 32, message="Title must be at 1 character long")
 	private String title;
 	
-	private String pokemon1;
+	@OneToMany(mappedBy="team", fetch = FetchType.LAZY)
+    private List<Pokemon> pokemons;
 	
-	private String pokemon2;
-	
-	private String pokemon3;
-	
-	private String pokemon4;
-	
-	private String pokemon5;
-	
-	private String pokemon6;
-	
-	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="box_id")
+    private Box box;
 	
 //	@ManyToOne(fetch = FetchType.LAZY)
 //	@JoinColumn(name="user_id")
@@ -56,14 +51,9 @@ public class Team {
 	public Team() {
 	}
 
-	public Team(String title, String pokemon1, String pokemon2, String pokemon3, String pokemon4, String pokemon5, String pokemon6, User user) {
+	public Team(String title, User user, List<Pokemon> pokemons) {
 		this.title = title;
-		this.pokemon1 = pokemon1;
-		this.pokemon2 = pokemon2;
-		this.pokemon3 = pokemon3;
-		this.pokemon4 = pokemon4;
-		this.pokemon5 = pokemon5;
-		this.pokemon6 = pokemon6;
+		this.pokemons = pokemons;
 //		this.user = user;
 	}
 
@@ -83,52 +73,12 @@ public class Team {
 		this.title = title;
 	}
 
-	public String getPokemon1() {
-		return pokemon1;
+	public List<Pokemon> getPokemons() {
+		return pokemons;
 	}
 
-	public void setPokemon1(String pokemon1) {
-		this.pokemon1 = pokemon1;
-	}
-
-	public String getPokemon2() {
-		return pokemon2;
-	}
-
-	public void setPokemon2(String pokemon2) {
-		this.pokemon2 = pokemon2;
-	}
-	
-	public String getPokemon3() {
-		return pokemon3;
-	}
-
-	public void setPokemon3(String pokemon3) {
-		this.pokemon3 = pokemon3;
-	}
-	
-	public String getPokemon4() {
-		return pokemon4;
-	}
-
-	public void setPokemon4(String pokemon4) {
-		this.pokemon4 = pokemon4;
-	}
-	
-	public String getPokemon5() {
-		return pokemon5;
-	}
-
-	public void setPokemon5(String pokemon5) {
-		this.pokemon5 = pokemon5;
-	}
-	
-	public String getPokemon6() {
-		return pokemon6;
-	}
-
-	public void setPokemon6(String pokemon6) {
-		this.pokemon6 = pokemon6;
+	public void setPokemons(List<Pokemon> pokemons) {
+		this.pokemons = pokemons;
 	}
 
 //	public User getUser() {

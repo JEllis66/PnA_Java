@@ -4,6 +4,7 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -11,14 +12,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import com.pokemonteambuilder.models.LoginUser;
-import com.pokemonteambuilder.models.Pokemon;
-import com.pokemonteambuilder.models.User;
 import com.pokemonteambuilder.models.Box;
-import com.pokemonteambuilder.models.Team;
 import com.pokemonteambuilder.models.Discussion;
-
+import com.pokemonteambuilder.models.LoginUser;
+import com.pokemonteambuilder.models.Team;
+import com.pokemonteambuilder.models.User;
+import com.pokemonteambuilder.services.BoxService;
+import com.pokemonteambuilder.services.DiscussionService;
 import com.pokemonteambuilder.services.TeamService;
 import com.pokemonteambuilder.services.UserService;
 
@@ -29,6 +31,10 @@ public class PokemonTeamController {
 	TeamService teamService;
 	@Autowired
 	UserService userService;
+	@Autowired
+	BoxService boxService;
+	@Autowired
+	DiscussionService discussionService;
 	
 	
 	//index
@@ -37,6 +43,10 @@ public class PokemonTeamController {
 	public String index(Model model) {
 		model.addAttribute("newUser", new User());
 		model.addAttribute("newLogin", new LoginUser());
+		
+		Page<Discussion> pageDiscussions = discussionService.getDiscussionPage(0, 10);
+		model.addAttribute("discussions", pageDiscussions.getContent());
+		
 		return "index.jsp";
 	}
 	
@@ -47,6 +57,9 @@ public class PokemonTeamController {
 		User user = userService.register(newUser, result);
 		if(result.hasErrors()) {
 			model.addAttribute("newLogin", new LoginUser());
+			
+			Page<Discussion> pageDiscussions = discussionService.getDiscussionPage(0, 10);
+			model.addAttribute("discussions", pageDiscussions.getContent());
 			return "index.jsp";
 		}
 		session.setAttribute("userName", user.getName());
@@ -55,10 +68,19 @@ public class PokemonTeamController {
 	}
 	
 	@PostMapping("/discussion/submit")
-	public String addNewDiscussion(@Valid @ModelAttribute("discussion") Discussion discussion, BindingResult result){
-			
+	public String submitDiscussion(Model model, @RequestParam(defaultValue = "0") int page, @Valid @ModelAttribute("newDiscussion") Discussion discussion, BindingResult result, HttpSession session) {
+		if(discussion.getUser().getId() != (long)session.getAttribute("userId")) {
+			return "redirect:/";
+		}
+		
 		if (result.hasErrors()) {
-			return "newDiscussion.jsp";
+			Page<Discussion> pageDiscussions = discussionService.getDiscussionPage(page, 10);
+			
+			model.addAttribute("discussions", pageDiscussions.getContent());
+			model.addAttribute("currentPage", pageDiscussions.getNumber());
+			model.addAttribute("totalPages", pageDiscussions.getTotalPages());
+			
+			return "discussion.jsp";
 		}
 		discussionService.createDiscussion(discussion);
 		return "redirect:/discussion";
@@ -92,6 +114,10 @@ public class PokemonTeamController {
 			User user = userService.login(newLogin, result);
 			if(result.hasErrors()) {
 				model.addAttribute("newUser", new User());
+				
+				Page<Discussion> pageDiscussions = discussionService.getDiscussionPage(0, 10);
+				model.addAttribute("discussions", pageDiscussions.getContent());
+				
 				return "index.jsp";
 			}
 			session.setAttribute("userName", user.getName());
@@ -109,8 +135,38 @@ public class PokemonTeamController {
 			return "box.jsp";
 		}
 		
+		@GetMapping("/box/{id}")
+		public String viewBox(Model model, HttpSession session, @PathVariable("id") Long boxId) {
+
+			if(session.getAttribute("userId" ) == null) {
+				return "redirect:/";
+			}
+			model.addAttribute("box", boxService.findById(boxId));
+			
+			return "ViewBox.jsp";
+			
+		}
 	
-	
+		@GetMapping("/team/{id}")
+		public String viewTeam(Model model, HttpSession session, @PathVariable("id") Long teamId) {
+			if(session.getAttribute("userId" ) == null) {
+				return "redirect:/";
+			}
+			model.addAttribute("team", teamService.findById(teamId));
+			
+			return "ViewTeam.jsp";
+		}
+		
+		@GetMapping("/discussion")
+		public String discussion(Model model, @RequestParam(defaultValue = "0") int page, @ModelAttribute("newDiscussion") Discussion newDiscussion, HttpSession session) {				
+			Page<Discussion> pageDiscussions = discussionService.getDiscussionPage(page, 10);
+			
+			model.addAttribute("discussions", pageDiscussions.getContent());
+			model.addAttribute("currentPage", pageDiscussions.getNumber());
+			model.addAttribute("totalPages", pageDiscussions.getTotalPages());
+			
+			return "discussion.jsp";
+		}
 	
 	//Update
 	
@@ -134,7 +190,6 @@ public class PokemonTeamController {
 			
 			return "redirect:/dashboard";
 		}
-	
 	
 	//Delete
 	
