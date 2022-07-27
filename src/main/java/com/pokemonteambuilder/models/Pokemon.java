@@ -1,9 +1,12 @@
 package com.pokemonteambuilder.models;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -79,6 +82,10 @@ public class Pokemon {
 		this.specialDefense = specialDefense;
 		this.speed = speed;
 	}
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="team_id")
+    private Team team;
 	
 	public Pokemon() {
 	}

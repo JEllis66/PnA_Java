@@ -1,6 +1,7 @@
 package com.pokemonteambuilder.models;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
@@ -29,17 +31,8 @@ public class Team {
 	@Size(min = 1, max = 32, message="Title must be at 1 character long")
 	private String title;
 	
-	private String pokemon1;
-	
-	private String pokemon2;
-	
-	private String pokemon3;
-	
-	private String pokemon4;
-	
-	private String pokemon5;
-	
-	private String pokemon6;
+	@OneToMany(mappedBy="pokemon", fetch = FetchType.LAZY)
+    private List<Pokemon> pokemons;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="box_id")
