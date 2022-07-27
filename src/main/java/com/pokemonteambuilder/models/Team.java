@@ -36,7 +36,11 @@ public class Team {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="box_id")
-    private Box box;
+	private Box teamBox;
+	
+	@Column(updatable=false)
+	@OneToMany(mappedBy="pokemonTeam")
+	List<Pokemon> pokemon;
 	
 //	@ManyToOne(fetch = FetchType.LAZY)
 //	@JoinColumn(name="user_id")
@@ -88,6 +92,14 @@ public class Team {
 //	public void setUser(User user) {
 //		this.user = user;
 //	}
+
+	public Box getTeamBox() {
+		return teamBox;
+	}
+
+	public void setTeamBox(Box teamBox) {
+		this.teamBox = teamBox;
+	}
 
 	public Date getCreatedAt() {
 		return createdAt;
