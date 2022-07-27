@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.pokemonteambuilder.models.Pokemon;
 import com.pokemonteambuilder.models.Team;
 import com.pokemonteambuilder.repositories.TeamRepository;
 
@@ -50,10 +51,11 @@ public class TeamService {
 			teamRepository.delete(findById(id));
 		}
 	
-	//checks the number of teams in a box
-		public boolean limitCheck(Long boxId) {
-			List <Team> teams= teamRepository.findByBoxId(boxId);
-			if (teams.size() > 5) {
+	//checks the number of pokemons in a team
+	
+		public boolean teamLimitChecker(Long teamId) {
+			List<Pokemon> pokemons = findById(teamId).getPokemons();
+			if (pokemons.size() > 6) {
 				return false;
 			}
 			return true;
