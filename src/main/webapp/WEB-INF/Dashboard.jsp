@@ -74,21 +74,21 @@
 					<ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
 						<c:forEach var="box" items="${ boxes }">
 							<li class="nav-item" role="presentation"><a class="nav-link"
-								id="profile-tab" data-bs-toggle="tab" href="#profile" role="tab"
-								aria-controls="profile" aria-selected="false">${ box.title }</a></li>
+								id="box${ box.id }-tab" data-bs-toggle="tab" href="#box${box.id }" role="tab"
+								aria-controls="box${box.id }" aria-selected="false">${ box.title }</a></li>
 						</c:forEach>
-						<li>
+						
 						<li class="nav-item" role="presentation"><a class="nav-link"
 							id="profile-tab" href="/box/submit" role="tab"
 							aria-controls="profile" aria-selected="false">+</a></li>
-						</li>
+						
 					</ul>
 				</div>
 				<div class="card-body">
 					<div class="tab-content" id="myTabContent">
 						<c:forEach var="box" items="${ boxes }">
-							<div class="tab-pane fade show active" id="profile"
-								role="tabpanel" aria-labelledby="profile-tab">
+							<div class="tab-pane fade" id="box${box.id }"
+								role="tabpanel" aria-labelledby="box${ box.id }-tab">
 								<c:forEach var="team" items="${ box.teams }">
 									<ul>
 										<c:forEach var="pokemon" items="${ team.pokemon }">
@@ -96,6 +96,7 @@
 										</c:forEach>
 									</ul>
 								</c:forEach>
+								<a href="/box/${box.id  }/delete">Delete</a>
 							</div>
 						</c:forEach>
 
