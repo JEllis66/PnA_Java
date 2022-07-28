@@ -87,9 +87,6 @@ public class Pokemon {
 		this.speed = speed;
 	}
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="team_id")
-    private Team team;
 	
 	public Pokemon() {
 	}

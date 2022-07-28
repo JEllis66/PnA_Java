@@ -54,7 +54,7 @@ public class TeamService {
 	//checks the number of pokemons in a team
 	
 		public boolean teamLimitChecker(Long teamId) {
-			List<Pokemon> pokemons = findById(teamId).getPokemons();
+			List<Pokemon> pokemons = findById(teamId).getPokemon();
 			if (pokemons.size() > 6) {
 				return false;
 			}

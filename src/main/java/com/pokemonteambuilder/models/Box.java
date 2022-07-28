@@ -57,6 +57,7 @@ public class Box {
 
 	public Box(String title, User user) {
 		this.title = title;
+	}
 
 	public Box(String title, List<Team> teams, User user) {
 		this.title = title;
