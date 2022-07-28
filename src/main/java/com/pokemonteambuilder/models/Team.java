@@ -38,7 +38,7 @@ public class Team {
 	
 	@Column(updatable=false)
 	@OneToMany(mappedBy="pokemonTeam")
-	List<Pokemon> pokemon;
+	List<Pokemon> pokemons;
 	
 //	@ManyToOne(fetch = FetchType.LAZY)
 //	@JoinColumn(name="user_id")
@@ -53,8 +53,10 @@ public class Team {
 	public Team() {
 	}
 
-	public Team(String title, User user) {
+	public Team(String title, List<Pokemon> pokemons, Box teamBox) {
 		this.title = title;
+		this.pokemons = pokemons;
+		this.teamBox = teamBox;
 //		this.user = user;
 	}
 
@@ -90,12 +92,12 @@ public class Team {
 		this.teamBox = teamBox;
 	}
 
-	public List<Pokemon> getPokemon() {
-		return pokemon;
+	public List<Pokemon> getPokemons() {
+		return pokemons;
 	}
 
-	public void setPokemon(List<Pokemon> pokemon) {
-		this.pokemon = pokemon;
+	public void setPokemon(List<Pokemon> pokemons) {
+		this.pokemons = pokemons;
 	}
 
 	public Date getCreatedAt() {

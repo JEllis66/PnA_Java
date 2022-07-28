@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BindingResult;
 
 import com.pokemonteambuilder.models.Box;
 import com.pokemonteambuilder.models.User;
@@ -56,11 +57,12 @@ public class BoxService {
 		
 	//checks the number of teams in a box
 		
-		public boolean boxLimitChecker(Long boxId) {
+		public Box boxLimitChecker(Long boxId, BindingResult result) {
 			List <Team> teams= findById(boxId).getTeams();
-			if (teams.size() > 5) {
-				return false;
+			if (teams.size() < 5) {
+				result.rejectValue("teams", "Matches", "Too many teams in this Box!");
+	    		return null;
 			}
-			return true;
+			return null;
 		}
 }

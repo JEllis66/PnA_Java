@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BindingResult;
 
 import com.pokemonteambuilder.models.Pokemon;
 import com.pokemonteambuilder.models.Team;
@@ -16,11 +17,27 @@ public class TeamService {
 	@Autowired
 	private TeamRepository teamRepository;
 	
+	@Autowired
+	private PokemonService pokemonService;
 	
 	//Create
 	
 		public Team createTeam(Team t) {
 			return teamRepository.save(t);
+		}
+		
+		public Team addPokemonToTeam(Long teamId, Long pokemonId) {
+			Team team = findById(teamId);
+			team.getPokemons().add(pokemonService.findById(pokemonId));
+			teamRepository.save(team);
+			return team;
+		}
+		
+		public Team removePokemonFromTeam(Long teamId, Long pokemonId) {
+			Team team = findById(teamId);
+			team.getPokemons().remove(pokemonService.findById(pokemonId));
+			teamRepository.save(team);
+			return team;
 		}
 	
 	
@@ -31,9 +48,9 @@ public class TeamService {
 		}
 
 		public Team findById(Long id) {
-			Optional<Team> optionalShowId = teamRepository.findById(id);
-			if(optionalShowId.isPresent()) {
-				return optionalShowId.get();
+			Optional<Team> optionalTeam = teamRepository.findById(id);
+			if(optionalTeam.isPresent()) {
+				return optionalTeam.get();
 			}
 			return null;
 		}
@@ -53,12 +70,13 @@ public class TeamService {
 	
 	//checks the number of pokemons in a team
 	
-		public boolean teamLimitChecker(Long teamId) {
-			List<Pokemon> pokemons = findById(teamId).getPokemon();
-			if (pokemons.size() > 6) {
-				return false;
+		public Team teamLimitChecker(Long teamId, BindingResult result) {
+			List<Pokemon> pokemons = findById(teamId).getPokemons();
+			if (pokemons.size() >= 6) {
+				result.rejectValue("pokemons", "Matches", "Too many pokemon in this Team!");
+	    		return null;
 			}
-			return true;
+			return null;
 		}
 	
 }
