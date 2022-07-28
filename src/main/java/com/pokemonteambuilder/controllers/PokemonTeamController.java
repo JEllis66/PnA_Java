@@ -34,13 +34,10 @@ public class PokemonTeamController {
 	@Autowired
 	UserService userService;
 	@Autowired
-	DiscussionService discussionService;
-	@Autowired
 	BoxService boxService;
+	@Autowired
+	DiscussionService discussionService;
 
-	// index
-	
-	
 	//index
 	
 	@GetMapping("/")
@@ -100,16 +97,16 @@ public class PokemonTeamController {
 		teamService.createTeam(team);
 		return "redirect:/teams";
 	}
-
+	
 	@GetMapping("/box/submit")
-	public String addNewBox(@ModelAttribute("box") Box box, BindingResult result, HttpSession session) {
-		User user = userService.findById((Long) session.getAttribute("userId"));
-		List<Box> boxes = user.getBoxes();
-		if (boxes.size() < 6) {
-			boxService.createBox(box, user);
-		}
-		return "redirect:/dashboard";
-	}
+    public String addNewBox(@ModelAttribute("box") Box box, BindingResult result, HttpSession session) {
+        User user = userService.findById((Long) session.getAttribute("userId"));
+        List<Box> boxes = user.getBoxes();
+        if (boxes.size() < 6) {
+            boxService.createBox(box, user);
+        }
+        return "redirect:/dashboard";
+    }
 	
 	
 	//Read
@@ -187,31 +184,28 @@ public class PokemonTeamController {
 			return "box.jsp";
 		}
 		
+		@PostMapping("/box/edit/submit/{id}")
+		public String submitUpdate(Model model, @Valid @ModelAttribute("tvshow") Box box, BindingResult result) {
+			if (result.hasErrors()) {
+				return "box.jsp";
+			}
+			boxService.updateBox(box);
 
-
-	@PostMapping("/box/edit/submit/{id}")
-	public String submitUpdate(Model model, @Valid @ModelAttribute("tvshow") Box box, BindingResult result) {
-		if (result.hasErrors()) {
-			return "box.jsp";
+			return "redirect:/dashboard";
 		}
-		boxService.updateBox(box);
 
-		return "redirect:/dashboard";
-	}
+	//Delete
+	
+		@GetMapping("/logout")
+		public String logout(HttpSession session) {
+			session.invalidate();
+			return "redirect:/";
+		}
+		
+		@GetMapping("/box/{id}/delete")
+		public String delete(@PathVariable("id") Long id) {
+			boxService.deleteBox(id);
 
-	// Delete
-
-	@GetMapping("/logout")
-	public String logout(HttpSession session) {
-		session.invalidate();
-		return "redirect:/";
-	}
-
-	@GetMapping("/box/{id}/delete")
-	public String delete(@PathVariable("id") Long id) {
-		boxService.deleteBox(id);
-
-		return "redirect:/box";
-	}
-
+			return "redirect:/box";
+		}
 }

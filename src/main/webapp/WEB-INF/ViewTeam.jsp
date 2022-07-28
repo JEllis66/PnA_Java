@@ -35,7 +35,7 @@
                 </div>
             </div>
         </nav>
-        <h2>Pokemon already in <c:out value="${team.title}"/></h2>
+        <h2>Pokemons already in <c:out value="${team.title}"/></h2>
         <div>
         	<c:forEach var="pokemon" items="${team.pokemons}">
 		    	<div>
