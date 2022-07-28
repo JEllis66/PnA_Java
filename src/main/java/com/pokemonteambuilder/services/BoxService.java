@@ -59,7 +59,7 @@ public class BoxService {
 		
 		public Box boxLimitChecker(Long boxId, BindingResult result) {
 			List <Team> teams= findById(boxId).getTeams();
-			if (teams.size() < 5) {
+			if (teams.size() >= 5) {
 				result.rejectValue("teams", "Matches", "Too many teams in this Box!");
 	    		return null;
 			}

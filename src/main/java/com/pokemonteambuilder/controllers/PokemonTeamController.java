@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.pokemonteambuilder.models.Box;
@@ -108,6 +109,19 @@ public class PokemonTeamController {
         return "redirect:/dashboard";
     }
 	
+	@RequestMapping("/team/{teamId}/pokemon/{pokemonId}")
+	public String addNewPokemon(BindingResult result, HttpSession session,
+			@PathVariable("teamId") Long teamId, @PathVariable("pokemonId") Long pokemonId) {
+		if(session.getAttribute("userId" ) == null) {
+			return "redirect:/";
+		}
+		teamService.teamLimitChecker(teamId, result);
+		if(result.hasErrors()) {
+			return String.format("redirect:/team/%d", teamId); 
+		}
+		teamService.addPokemonToTeam(teamId, pokemonId);
+		return String.format("redirect:/team/%d", teamId);
+	}
 	
 	//Read
 	
@@ -138,6 +152,7 @@ public class PokemonTeamController {
 			model.addAttribute("user", user);
 			return "Dashboard.jsp";
 		}
+		
 		@GetMapping("/box/{id}")
 		public String viewBox(Model model, HttpSession session, @PathVariable("id") Long boxId) {
 
@@ -208,4 +223,16 @@ public class PokemonTeamController {
 
 			return "redirect:/box";
 		}
+
+		@RequestMapping("/team/{teamId}/remove/pokemon/{pokemonId}")
+		public String removePokemon(BindingResult result, HttpSession session,
+				@PathVariable("teamId") Long teamId, @PathVariable("pokemonId") Long pokemonId) {
+			if(session.getAttribute("userId" ) == null) {
+				return "redirect:/";
+			}
+			
+			teamService.removePokemonFromTeam(teamId, pokemonId);
+			return String.format("redirect:/team/%d", teamId);
+		}
+		
 }
