@@ -187,28 +187,7 @@ public class PokemonTeamController {
 			return "box.jsp";
 		}
 		
-		@PostMapping("/box/edit/submit/{id}")
-		public String submitUpdate(Model model, @Valid @ModelAttribute("tvshow") Box box, BindingResult result) {
-			if(result.hasErrors()) {
-				return "box.jsp";
-			}
-			boxService.updateBox(box);
-			
-			return "redirect:/dashboard";
-		}
-	
-	//Delete
-	
-		@GetMapping("/logout")
-		public String logout(HttpSession session) {
-			session.invalidate();
-			return "redirect:/";
-		}
-		Box box = boxService.findById(id);
-		model.addAttribute("box", box);
 
-		return "box.jsp";
-	}
 
 	@PostMapping("/box/edit/submit/{id}")
 	public String submitUpdate(Model model, @Valid @ModelAttribute("tvshow") Box box, BindingResult result) {

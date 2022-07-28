@@ -68,6 +68,7 @@ public class User {
     	this.updatedAt = new Date();
     }
     
+    @Column(updatable=false)
     @OneToMany(mappedBy="user", fetch = FetchType.LAZY)
     private List<Box> boxes;
     

@@ -31,8 +31,6 @@ public class Team {
 	@Size(min = 1, max = 32, message="Title must be at 1 character long")
 	private String title;
 	
-	@OneToMany(mappedBy="team", fetch = FetchType.LAZY)
-    private List<Pokemon> pokemons;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="box_id")
@@ -55,9 +53,8 @@ public class Team {
 	public Team() {
 	}
 
-	public Team(String title, User user, List<Pokemon> pokemons) {
+	public Team(String title, User user) {
 		this.title = title;
-		this.pokemons = pokemons;
 //		this.user = user;
 	}
 
@@ -77,14 +74,6 @@ public class Team {
 		this.title = title;
 	}
 
-	public List<Pokemon> getPokemons() {
-		return pokemons;
-	}
-
-	public void setPokemons(List<Pokemon> pokemons) {
-		this.pokemons = pokemons;
-	}
-
 //	public User getUser() {
 //		return user;
 //	}
@@ -99,6 +88,14 @@ public class Team {
 
 	public void setTeamBox(Box teamBox) {
 		this.teamBox = teamBox;
+	}
+
+	public List<Pokemon> getPokemon() {
+		return pokemon;
+	}
+
+	public void setPokemon(List<Pokemon> pokemon) {
+		this.pokemon = pokemon;
 	}
 
 	public Date getCreatedAt() {
