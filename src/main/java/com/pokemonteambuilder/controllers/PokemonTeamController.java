@@ -19,10 +19,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.pokemonteambuilder.models.Box;
 import com.pokemonteambuilder.models.Discussion;
 import com.pokemonteambuilder.models.LoginUser;
+import com.pokemonteambuilder.models.Pokemon;
 import com.pokemonteambuilder.models.Team;
 import com.pokemonteambuilder.models.User;
 import com.pokemonteambuilder.services.BoxService;
 import com.pokemonteambuilder.services.DiscussionService;
+import com.pokemonteambuilder.services.PokemonService;
 import com.pokemonteambuilder.services.TeamService;
 import com.pokemonteambuilder.services.UserService;
 
@@ -34,10 +36,15 @@ public class PokemonTeamController {
 	@Autowired
 	UserService userService;
 	@Autowired
+	DiscussionService discussionService;
+	@Autowired
 	BoxService boxService;
 	@Autowired
-	DiscussionService discussionService;
+	PokemonService pokeServ;
 
+	// index
+	
+	
 	//index
 	
 	@GetMapping("/")
@@ -97,16 +104,26 @@ public class PokemonTeamController {
 		teamService.createTeam(team);
 		return "redirect:/teams";
 	}
-	
+
 	@GetMapping("/box/submit")
-    public String addNewBox(@ModelAttribute("box") Box box, BindingResult result, HttpSession session) {
-        User user = userService.findById((Long) session.getAttribute("userId"));
-        List<Box> boxes = user.getBoxes();
-        if (boxes.size() < 6) {
-            boxService.createBox(box, user);
-        }
-        return "redirect:/dashboard";
-    }
+	public String addNewBox(@ModelAttribute("box") Box box, BindingResult result, HttpSession session) {
+		User user = userService.findById((Long) session.getAttribute("userId"));
+		List<Box> boxes = user.getBoxes();
+		if (boxes.size() < 6) {
+			boxService.createBox(box, user);
+		}
+		return "redirect:/dashboard";
+	}
+	@PostMapping("/pokemon/add/{id}")
+	public String addPokemon(@PathVariable("id") Long id, @Valid @ModelAttribute("newPokemon") Pokemon poke, BindingResult result) {
+		if(result.hasErrors()) {
+			return "redirect:/team/" + id;
+		}
+		Team team = teamService.findById(id);
+		poke.setPokemonTeam(team);
+		pokeServ.createPokemon(poke, team);
+		return "redirect:/team/" + id;
+	}
 	
 	
 	//Read
@@ -184,28 +201,40 @@ public class PokemonTeamController {
 			return "box.jsp";
 		}
 		
-		@PostMapping("/box/edit/submit/{id}")
-		public String submitUpdate(Model model, @Valid @ModelAttribute("tvshow") Box box, BindingResult result) {
-			if (result.hasErrors()) {
-				return "box.jsp";
-			}
-			boxService.updateBox(box);
 
-			return "redirect:/dashboard";
-		}
 
-	//Delete
-	
-		@GetMapping("/logout")
-		public String logout(HttpSession session) {
-			session.invalidate();
-			return "redirect:/";
+	@PostMapping("/box/edit/submit/{id}")
+	public String submitUpdate(Model model, @Valid @ModelAttribute("tvshow") Box box, BindingResult result) {
+		if (result.hasErrors()) {
+			return "box.jsp";
 		}
+		boxService.updateBox(box);
+
+		return "redirect:/dashboard";
+	}
+
+	// Delete
+
+	@GetMapping("/logout")
+	public String logout(HttpSession session) {
+		session.invalidate();
+		return "redirect:/";
+	}
+
+	@GetMapping("/box/{id}/delete")
+	public String deleteBox(@PathVariable("id") Long id) {
+		boxService.deleteBox(id);
+
+		return "redirect:/dashboard";
+	}
+	@GetMapping("/pokemon/{id}/delete")
+	public String deletePokemon(@PathVariable("id") Long id) {
+		Pokemon pokemon = pokeServ.findPokemon(id);
+		Long teamId = pokemon.getPokemonTeam().getId();
+		pokeServ.deletePokemon(pokemon);
 		
-		@GetMapping("/box/{id}/delete")
-		public String delete(@PathVariable("id") Long id) {
-			boxService.deleteBox(id);
+		return "redirect:/team/" + teamId;
+	}
+	
 
-			return "redirect:/box";
-		}
 }

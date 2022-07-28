@@ -28,14 +28,14 @@ public class TeamService {
 		
 		public Team addPokemonToTeam(Long teamId, Long pokemonId) {
 			Team team = findById(teamId);
-			team.getPokemons().add(pokemonService.findById(pokemonId));
+			team.getPokemon().add(pokemonService.findPokemon(pokemonId));
 			teamRepository.save(team);
 			return team;
 		}
 		
 		public Team removePokemonFromTeam(Long teamId, Long pokemonId) {
 			Team team = findById(teamId);
-			team.getPokemons().remove(pokemonService.findById(pokemonId));
+			team.getPokemon().remove(pokemonService.findPokemon(pokemonId));
 			teamRepository.save(team);
 			return team;
 		}
@@ -71,7 +71,7 @@ public class TeamService {
 	//checks the number of pokemons in a team
 	
 		public Team teamLimitChecker(Long teamId, BindingResult result) {
-			List<Pokemon> pokemons = findById(teamId).getPokemons();
+			List<Pokemon> pokemons = findById(teamId).getPokemon();
 			if (pokemons.size() >= 6) {
 				result.rejectValue("pokemons", "Matches", "Too many pokemon in this Team!");
 	    		return null;
