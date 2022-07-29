@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.pokemonteambuilder.models.Box;
@@ -95,14 +96,11 @@ public class PokemonTeamController {
 		return "redirect:/discussion";
 	}
 
-	@PostMapping("/team/submit")
-	public String addNewTeam(@Valid @ModelAttribute("tvshow") Team team, BindingResult result) {
+	@GetMapping("/team/submit/{id}")
+	public String addNewTeam(@PathVariable("id") Long id) {
 
-		if (result.hasErrors()) {
-			return "newTeam.jsp";
-		}
-		teamService.createTeam(team);
-		return "redirect:/teams";
+		teamService.createTeam(boxService.findById(id));
+		return "redirect:/dashboard";
 	}
 
 	@GetMapping("/box/submit")
@@ -115,14 +113,17 @@ public class PokemonTeamController {
 		return "redirect:/dashboard";
 	}
 	@PostMapping("/pokemon/add/{id}")
-	public String addPokemon(@PathVariable("id") Long id, @Valid @ModelAttribute("newPokemon") Pokemon poke, BindingResult result) {
-		if(result.hasErrors()) {
-			return "redirect:/team/" + id;
-		}
+	public String addPokemon(@PathVariable("id") Long id, @Valid @ModelAttribute("newPokemon") Pokemon poke, BindingResult result, Model model) {
 		Team team = teamService.findById(id);
-		poke.setPokemonTeam(team);
-		pokeServ.createPokemon(poke, team);
+		if(result.hasErrors()) {
+			model.addAttribute("team", team);
+			return "ViewTeam.jsp";
+		}
+		else {
+		
+		pokeServ.createPokemon(poke, id);
 		return "redirect:/team/" + id;
+		}
 	}
 	
 	
@@ -141,7 +142,7 @@ public class PokemonTeamController {
 			}
 			session.setAttribute("userName", user.getName());
 			session.setAttribute("userId", user.getId());
-			return "redirect:/";
+			return "redirect:/dashboard";
 		}
 	
 		@GetMapping("/dashboard")
@@ -168,11 +169,12 @@ public class PokemonTeamController {
 		}
 	
 		@GetMapping("/team/{id}")
-		public String viewTeam(Model model, HttpSession session, @PathVariable("id") Long teamId) {
+		public String viewTeam(@PathVariable("id") Long teamId, @ModelAttribute("newPokemon") Pokemon poke, Model model, HttpSession session) {
 			if(session.getAttribute("userId" ) == null) {
 				return "redirect:/";
 			}
 			model.addAttribute("team", teamService.findById(teamId));
+			model.addAttribute("newPokemon", poke);
 			
 			return "ViewTeam.jsp";
 		}

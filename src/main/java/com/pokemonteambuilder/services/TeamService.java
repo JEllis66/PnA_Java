@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 
+import com.pokemonteambuilder.models.Box;
 import com.pokemonteambuilder.models.Pokemon;
 import com.pokemonteambuilder.models.Team;
 import com.pokemonteambuilder.repositories.TeamRepository;
@@ -22,8 +23,14 @@ public class TeamService {
 	
 	//Create
 	
-		public Team createTeam(Team t) {
-			return teamRepository.save(t);
+		public Team createTeam(Box box) {
+			if(box.getTeams().size()<=6) {
+				Team t = new Team();
+				t.setTitle("Team" + box.getTeams().size());
+				t.setTeamBox(box);
+				return teamRepository.save(t);
+			}
+			return null;
 		}
 		
 		public Team addPokemonToTeam(Long teamId, Long pokemonId) {
