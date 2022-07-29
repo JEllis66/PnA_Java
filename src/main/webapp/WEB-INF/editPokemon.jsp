@@ -28,7 +28,7 @@
 		</div>
 		<div class="card">
 
-			<div class="card-header">Pokemon in Team</div>
+			<div class="card-header">${pokemon.name}</div>
 			<div class="card-body">
 				<form:form action="/pokemon/${pokemon.id}/update" method="post" modelAttribute="pokemon">
 					<div class="form-group row">
@@ -40,12 +40,12 @@
 						<form:input path="name" name="name" class="form-control" />
 						</div>
 					</div>
-					<div class="text-right">
+					<div class="btn-group float-end">
 						<input type="submit" class="btn btn-info mt-3" value="Submit" />
 					</div>
 				</form:form>
-				<div class="btn-group btn-sm float-end">
-					<a href="/team/{id}" class="btn btn-info me-3" role="button">Cancel</a>
+				<div class="btn-group float-end mt-3">
+					<a href="/team/${pokemon.pokemonTeam.id}" class="btn btn-secondary me-3" role="button">Cancel</a>
 				</div>
 
 			</div>
