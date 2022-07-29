@@ -23,7 +23,7 @@ public class Pokemon {
 	@Size(min=2, max=64, message="Name must be between 2 and 64 characters")
 	private String name;
 	
-	@NotEmpty(message="A type is required")
+	
 	private String type;
 	
 	
