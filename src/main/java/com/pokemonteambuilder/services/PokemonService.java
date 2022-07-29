@@ -6,17 +6,22 @@ import org.springframework.stereotype.Service;
 import com.pokemonteambuilder.models.Pokemon;
 import com.pokemonteambuilder.models.Team;
 import com.pokemonteambuilder.repositories.PokemonRepo;
+import com.pokemonteambuilder.repositories.TeamRepository;
 
 @Service
 public class PokemonService {
 	@Autowired
 	PokemonRepo pokeRepo;
+	@Autowired
+	TeamRepository teamRepo;
 	
-	public Pokemon createPokemon(Pokemon poke, Team team) {
-		if(team.getPokemon().size()<=6) {
-		return pokeRepo.save(poke);
-		}
-		return null;
+	public Pokemon createPokemon(Pokemon poke, Long id) {
+		Team team = teamRepo.findById(id).get();
+		poke.setPokemonTeam(team);
+
+			return pokeRepo.save(poke);
+		
+	
 	}
 	public Pokemon updatePokemon(Pokemon pokemon) {
 		return pokeRepo.save(pokemon);

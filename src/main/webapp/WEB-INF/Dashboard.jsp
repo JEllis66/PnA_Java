@@ -90,12 +90,15 @@
 							<div class="tab-pane fade" id="box${box.id }"
 								role="tabpanel" aria-labelledby="box${ box.id }-tab">
 								<c:forEach var="team" items="${ box.teams }">
+								<a href="/team/${team.id}">${ team.title }</a>
 									<ul>
+											
 										<c:forEach var="pokemon" items="${ team.pokemon }">
 											<li>${ pokemon.name }</li>
 										</c:forEach>
 									</ul>
 								</c:forEach>
+								<a href="/team/submit/${box.id}">Add Team</a>
 								<a href="/box/${box.id  }/delete">Delete</a>
 							</div>
 						</c:forEach>

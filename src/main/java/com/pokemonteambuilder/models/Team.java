@@ -53,8 +53,7 @@ public class Team {
 	public Team() {
 	}
 
-	public Team(String title, Box teamBox) {
-		this.title = title;
+	public Team(Box teamBox) {
 		this.teamBox = teamBox;
 //		this.user = user;
 	}
