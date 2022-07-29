@@ -292,7 +292,7 @@ public class PokemonTeamController {
 		
 		pokeServ.updatePokemon(pokemon);
 		
-		return "redirect:/dashboard";
+		return "redirect:/team/" + pokemon.getPokemonTeam().getId();
 	}
 
 
