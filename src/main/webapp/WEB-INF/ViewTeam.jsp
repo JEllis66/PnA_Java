@@ -15,7 +15,7 @@
 <meta charset="ISO-8859-1">
 <title>Insert title here</title>
 <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css">
-<link rel="stylesheet" href="/css/main.css">
+<link rel="stylesheet" href="/css/team.css">
 <!-- change to match your file/naming structure -->
 <script src="/webjars/jquery/jquery.min.js"></script>
 <script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
@@ -25,31 +25,45 @@
 	<jsp:include page="NavBar.jsp" />
 	<h1 class="text-center">${team.title }</h1>
 	<div class="container">
-	<h3>Pokemon in Team</h3>
-	<ul>
-		<c:forEach var="pokemon" items="${team.pokemon }">
-			<li>${pokemon.name }
-			<a href="/pokemon/${pokemon.id }/delete">Remove from team</a>
-			</li>
-			
-		</c:forEach>
-	</ul>
-	<h2>Add a pokemon</h2>
-	<form:form action="/pokemon/add/${ team.id }" method="POST"
-		modelAttribute="newPokemon" >
-		<input type="hidden" name="_method" value="put">
-		<table>
-			<tbody>
-				<tr>
-					<td><form:label class="form-control" path="name">Name:</form:label></td>
-					<td><form:errors path="name" class="text-danger" /></td>
-					<td><form:input path="name" class="form-control"/></td>
-				</tr>
-			</tbody>
-		</table>
-		<input type="submit" value="Add Pokemon">
-	</form:form>
-</div>
+		<div class="card">
+			<div class="card-header">Pokemon in Team</div>
+			<div class="card-body">
+				<ul>
+					<c:forEach var="pokemon" items="${team.pokemon }">
+						<li>${pokemon.name }<a href="/pokemon/${pokemon.id }/delete">Remove
+								from team</a>
+						</li>
+
+					</c:forEach>
+				</ul>
+			</div>
+			<div class="card-footer text-muted">Add more pokemon below</div>
+		</div>
+		<div class="card">
+			<div class="card-header">Add a Pokemon to your team!</div>
+			<div class="card-body">
+				<form:form action="/pokemon/add/${ team.id }" method="POST"
+					modelAttribute="newPokemon">
+					<input type="hidden" name="_method" value="put">
+					<table>
+						<tbody>
+							<tr>
+								<td><form:label class="form-control" path="name">Name:</form:label></td>
+								<td><form:errors path="name" class="text-danger" /></td>
+								<td><form:input path="name" class="form-control" /></td>
+							</tr>
+						</tbody>
+					</table>
+					<input type="submit" value="Add Pokemon">
+				</form:form>
+			</div>
+			<div class="card-footer text-muted">Pick your favorites</div>
+		</div>
+
+
+
+
+	</div>
 </body>
 
 </html>

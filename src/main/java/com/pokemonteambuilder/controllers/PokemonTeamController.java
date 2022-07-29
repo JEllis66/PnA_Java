@@ -120,8 +120,8 @@ public class PokemonTeamController {
 			return "ViewTeam.jsp";
 		}
 		else {
-		
-		pokeServ.createPokemon(poke, id);
+		Pokemon pokemon = new Pokemon(poke.getName());
+		pokeServ.createPokemon(pokemon, id);
 		return "redirect:/team/" + id;
 		}
 	}
@@ -174,7 +174,6 @@ public class PokemonTeamController {
 				return "redirect:/";
 			}
 			model.addAttribute("team", teamService.findById(teamId));
-			model.addAttribute("newPokemon", poke);
 			
 			return "ViewTeam.jsp";
 		}

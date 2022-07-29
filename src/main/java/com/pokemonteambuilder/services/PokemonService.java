@@ -17,11 +17,13 @@ public class PokemonService {
 	
 	public Pokemon createPokemon(Pokemon poke, Long id) {
 		Team team = teamRepo.findById(id).get();
+		if(team.getPokemon().size() <= 6) {
 		poke.setPokemonTeam(team);
 
 			return pokeRepo.save(poke);
 		
-	
+		}
+		return null;
 	}
 	public Pokemon updatePokemon(Pokemon pokemon) {
 		return pokeRepo.save(pokemon);
