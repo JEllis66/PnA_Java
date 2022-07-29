@@ -22,24 +22,7 @@
 </head>
 
 <body>
-	<nav class="navbar navbar-expand-xl navbar-dark bg-dark">
-		<div class="container-fluid">
-			<a class="navbar-brand" href="/dashboard"">Team Builder</a>
-			<button class="navbar-toggler" type="button"
-				data-bs-toggle="collapse" data-bs-target="#navbarDark"
-				aria-controls="navbarDark" aria-expanded="false"
-				aria-label="Toggle navigation">
-				<span class="navbar-toggler-icon"></span>
-			</button>
-			<div class="collapse navbar-collapse show" id="navbarDark">
-				<ul class="navbar-nav me-auto mb-2 mb-xl-0">
-					<li class="nav-item"><a class="nav-link" href="/discussion">Forum</a>
-					</li>
-				</ul>
-				<a class="d-flex nav-link" href="/logout">Logout</a>
-			</div>
-		</div>
-	</nav>
+	<jsp:include page="NavBar.jsp" />
 	<h1 class="text-center">${team.title }</h1>
 	<div class="container">
 	<h3>Pokemon in Team</h3>
