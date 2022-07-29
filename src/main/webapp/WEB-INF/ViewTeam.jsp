@@ -30,8 +30,23 @@
 			<div class="card-body">
 				<ul>
 					<c:forEach var="pokemon" items="${team.pokemon }">
-						<li>${pokemon.name }<a href="/pokemon/${pokemon.id }/delete">Remove
+						<!--  <li>${pokemon.name }<a href="/pokemon/${pokemon.id }/delete">Remove
 								from team</a>
+						</li> -->
+						<li>${pokemon.name }
+							<div class="btn-group">
+								<div class="btn-group btn-sm float-end">
+									<form:form action="/pokemon/${pokemon.id}/edit" method="get">
+										<input type="submit" class="btn btn-secondary" value="Edit" />
+									</form:form>
+								</div>
+								<div class="btn-sm float-end">
+									<form:form action="/pokemon/${pokemon.id}/delete" method="get">
+										<input type="hidden" name="_method" value="delete" />
+										<input type="submit" class="btn btn-danger" value="Delete" />
+									</form:form>
+								</div>
+							</div>
 						</li>
 
 					</c:forEach>
