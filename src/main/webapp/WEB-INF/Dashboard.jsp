@@ -34,7 +34,7 @@
 					<li class="nav-item"><a class="nav-link active"
 						aria-current="page" href="/my/boxes">Boxes</a></li>
 					<li class="nav-item"><a class="nav-link"
-						href="/poke/discussion">Forum</a></li>
+						href="/discussion">Forum</a></li>
 				</ul>
 				<a class="d-flex nav-link" href="/logout">Logout</a>
 			</div>

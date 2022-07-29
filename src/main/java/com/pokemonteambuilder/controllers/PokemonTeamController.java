@@ -141,7 +141,7 @@ public class PokemonTeamController {
 			}
 			session.setAttribute("userName", user.getName());
 			session.setAttribute("userId", user.getId());
-			return "redirect:/";
+			return "redirect:/dashboard";
 		}
 	
 		@GetMapping("/dashboard")
