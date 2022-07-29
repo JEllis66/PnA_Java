@@ -41,7 +41,7 @@
 						</div>
 					</div>
 					<div class="btn-group float-end">
-						<input type="submit" class="btn btn-info mt-3" value="Submit" />
+						<input type="submit" class="btn btn-info mt-3" value="Update" />
 					</div>
 				</form:form>
 				<div class="btn-group float-end mt-3">
