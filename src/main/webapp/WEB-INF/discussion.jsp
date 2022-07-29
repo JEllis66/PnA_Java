@@ -35,6 +35,10 @@
 		                    <div class="d-flex">
 								<div class="d-inline-block font-weight-bold">${discussion.user.name}:</div>
 								<div class="d-inline-block ml-2">${discussion.message}<span class="text-muted small ml-2">[Posted at: ${discussion.createdAt}]</span></div>
+								<c:if test="${userId == discussion.user.id}">
+								<div class="d-inline-block ml-2"><a href="/discussion/${discussion.id}/edit?page=${currentPage}">Edit</a></div>
+								<div class="d-inline-block ml-2"><a href="/discussion/${discussion.id}/delete">Delete</a></div>
+								</c:if>
 							</div>
 						</c:forEach>
 					</c:otherwise>
@@ -50,25 +54,46 @@
 					</div>
 				</c:if>
 			</div>
-			<c:if test="${userId != null}">
-				<div class="mt-4">
-					<form:form action="/discussion/submit?page=${currentPage}" method="post" modelAttribute="newDiscussion">
-						<div class="form-group row">
-							<div class="col-sm-1">
-								<div><form:label path="message" class="col-form-label">Add post:</form:label></div>
-								<div><form:errors path="message" class="text-danger" /></div>
+			<c:choose>
+				<c:when test="${discussionToEdit != null}">
+					<div class="mt-4">
+						<form:form action="/discussion/${discussionToEdit.id}/edit/submit?page=${currentPage}" method="post" modelAttribute="discussionToEdit">
+							<div class="form-group row">
+								<div class="col-sm-1">
+									<div><form:label path="message" class="col-form-label">Edit post:</form:label></div>
+									<div><form:errors path="message" class="text-danger" /></div>
+								</div>
+								<div class="col-sm-11">
+								<form:textarea path="message" name="message" class="form-control" row="5" />
+								</div>
 							</div>
-							<div class="col-sm-11">
-							<form:textarea path="message" class="form-control" row="5" />
+							<div class="text-right">
+								<form:input type="hidden" value="${userId}" path="user"/>
+								<input type="submit" class="btn btn-info mt-3" value="Submit" />
 							</div>
-						</div>
-						<div class="text-right">
-							<form:input type="hidden" value="${userId}" path="user"/>
-							<input type="submit" class="btn btn-info mt-3" value="Submit" />
-						</div>
-					</form:form>
-				</div>
-			</c:if>
+						</form:form>
+					</div>
+				</c:when>
+				<c:when test="${userId != null}">
+					<div class="mt-4">
+						<form:form action="/discussion/submit?page=${currentPage}" method="post" modelAttribute="newDiscussion">
+							<div class="form-group row">
+								<div class="col-sm-1">
+									<div><form:label path="message" class="col-form-label">Add post:</form:label></div>
+									<div><form:errors path="message" class="text-danger" /></div>
+								</div>
+								<div class="col-sm-11">
+								<form:textarea path="message" class="form-control" row="5" />
+								</div>
+							</div>
+							<div class="text-right">
+								<form:input type="hidden" value="${userId}" path="user"/>
+								<input type="submit" class="btn btn-info mt-3" value="Submit" />
+							</div>
+						</form:form>
+					</div>
+				</c:when>
+			</c:choose>
 		</div>
 	</div>
 

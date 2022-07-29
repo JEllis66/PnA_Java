@@ -203,6 +203,51 @@ public class PokemonTeamController {
 			return "box.jsp";
 		}
 		
+		@GetMapping("/discussion/{id}/edit")
+		public String editDiscussion(Model model, @PathVariable("id") Long id, @RequestParam(defaultValue = "0") int page, HttpSession session) {
+			Discussion discussion = discussionService.findById(id);
+			
+			if (discussion.getUser().getId() != (Long)session.getAttribute("userId")) {
+				return "redirect:/";
+			}
+			
+			Page<Discussion> pageDiscussions = discussionService.getDiscussionPage(page, 10);
+			
+			model.addAttribute("discussions", pageDiscussions.getContent());
+			model.addAttribute("currentPage", pageDiscussions.getNumber());
+			model.addAttribute("totalPages", pageDiscussions.getTotalPages());
+			
+			model.addAttribute("discussionToEdit", discussion);
+			
+			return "discussion.jsp";
+		}
+		
+		@PostMapping("/discussion/{id}/edit/submit")
+		public String submitUpdateDiscussion(Model model, @PathVariable("id") Long id, @RequestParam(defaultValue = "0") int page, @Valid @ModelAttribute("discussionToEdit") Discussion discussionToEdit, BindingResult result, HttpSession session) {
+			Discussion discussion = discussionService.findById(id);
+			
+			if (discussion.getUser().getId() != (Long)session.getAttribute("userId")) {
+				return "redirect:/";
+			}
+			
+			if (result.hasErrors()) {
+				Page<Discussion> pageDiscussions = discussionService.getDiscussionPage(page, 10);
+				
+				model.addAttribute("discussions", pageDiscussions.getContent());
+				model.addAttribute("currentPage", pageDiscussions.getNumber());
+				model.addAttribute("totalPages", pageDiscussions.getTotalPages());
+				
+				model.addAttribute("discussionToEdit", discussionToEdit);
+				
+				return "discussion.jsp";
+			}
+			
+			discussion.setMessage(discussionToEdit.getMessage());
+			discussionService.updateDiscussion(discussion);
+
+			return "redirect:/discussion?page=" + page;
+		}
+		
 
 
 	@PostMapping("/box/edit/submit/{id}")
@@ -221,6 +266,18 @@ public class PokemonTeamController {
 	public String logout(HttpSession session) {
 		session.invalidate();
 		return "redirect:/";
+	}
+	
+	@GetMapping("/discussion/{id}/delete")
+	public String deleteDiscussion(@PathVariable("id") Long id, HttpSession session) {
+		Discussion discussion = discussionService.findById(id);
+		
+		if (discussion.getUser().getId() != (Long)session.getAttribute("userId")) {
+			return "redirect:/";
+		}
+		
+		discussionService.deleteDiscussion(id);
+		return "redirect:/discussion";
 	}
 
 	@GetMapping("/box/{id}/delete")
